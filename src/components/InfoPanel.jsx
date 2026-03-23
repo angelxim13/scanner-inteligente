@@ -1,8 +1,14 @@
 export default function InfoPanel({ objeto, parte }) {
 
-  if (!objeto) return <p>No se ha detectado ningún objeto</p>
+  if (!objeto) {
+    return <p>No se ha detectado ningún objeto</p>
+  }
 
-  // 🖱️ Mouse
+  const estilosTitulo = {
+    color: "#00c9a7"
+  }
+
+  // Mouse
   if (objeto === "mouse") {
     const info = {
       "Cuerpo": "Parte principal del mouse."
@@ -12,13 +18,13 @@ export default function InfoPanel({ objeto, parte }) {
 
     return (
       <>
-        <h2>{parte}</h2>
+        <h2 style={estilosTitulo}>{parte}</h2>
         <p>{info[parte]}</p>
       </>
     )
   }
 
-  // 📱 Celular
+  // Celular
   if (objeto === "cell phone") {
     const info = {
       "Pantalla": "Muestra la información.",
@@ -29,13 +35,13 @@ export default function InfoPanel({ objeto, parte }) {
 
     return (
       <>
-        <h2>{parte}</h2>
+        <h2 style={estilosTitulo}>{parte}</h2>
         <p>{info[parte]}</p>
       </>
     )
   }
 
-  // 💻 Laptop
+  // Laptop
   if (objeto === "laptop") {
     const info = {
       "Pantalla": "Muestra la imagen.",
@@ -46,7 +52,7 @@ export default function InfoPanel({ objeto, parte }) {
 
     return (
       <>
-        <h2>{parte}</h2>
+        <h2 style={estilosTitulo}>{parte}</h2>
         <p>{info[parte]}</p>
       </>
     )
