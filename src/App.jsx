@@ -23,6 +23,19 @@ function App() {
       <div style={{ padding: "20px" }}>
         <h1>Escáner Inteligente</h1>
 
+        {/* IMAGEN */}
+        <img 
+          src="https://cdn-icons-png.flaticon.com/512/1042/1042339.png"
+          alt="Escaner"
+          style={{ 
+            width: "180px", 
+            display: "block", 
+            margin: "15px auto",
+            borderRadius: "15px",
+            boxShadow: "0 6px 20px rgba(0,0,0,0.6)"
+          }}
+        />
+
         {/* Mensaje dinámico */}
         {objetoDetectado && (
           <p style={{ textAlign: "center", fontSize: "18px" }}>
@@ -53,7 +66,7 @@ function App() {
 
         </div>
 
-        {/* Footer simple */}
+        {/* Footer */}
         <p style={{ textAlign: "center", marginTop: "20px", opacity: 0.7 }}>
           Proyecto de reconocimiento con IA 🚀
         </p>
