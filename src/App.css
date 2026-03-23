@@ -1,20 +1,21 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f2027, #2c5364);
   color: white;
 }
 
-/* Título principal */
+/* Título */
 h1 {
-  font-size: 42px;
+  font-size: 45px;
   text-align: center;
-  margin-bottom: 20px;
+  color: #00e5ff;
+  text-shadow: 0 0 10px rgba(0,229,255,0.8);
 }
 
 /* Botones */
 button {
-  background: #00c9a7;
+  background: linear-gradient(45deg, #ff416c, #ff4b2b);
   border: none;
   padding: 12px 20px;
   margin: 10px;
@@ -23,15 +24,15 @@ button {
   font-size: 16px;
   cursor: pointer;
   transition: 0.3s;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
 button:hover {
-  background: #00a68a;
-  transform: scale(1.08);
+  transform: scale(1.1);
+  background: linear-gradient(45deg, #ff4b2b, #ff416c);
 }
 
-/* Contenedor principal */
+/* Contenedor */
 .container {
   display: flex;
   gap: 20px;
@@ -39,31 +40,40 @@ button:hover {
   margin-top: 20px;
 }
 
-/* Área del modelo 3D */
+/* Modelo 3D */
 .viewer {
   width: 60%;
   height: 400px;
-  background: #1e272e;
+  background: #1a1a2e;
   border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.7);
   padding: 10px;
 }
 
-/* Panel de información */
+/* Panel */
 .panel {
   width: 40%;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.7);
   padding: 20px;
   border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.7);
 }
 
 /* Texto del panel */
 .panel h2 {
-  color: #00c9a7;
+  color: #00e5ff;
 }
 
 .panel p {
   font-size: 16px;
   line-height: 1.5;
-}  
+}
+
+/* Imagen */
+img {
+  transition: 0.3s;
+}
+
+img:hover {
+  transform: scale(1.05);
+}
