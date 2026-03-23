@@ -7,7 +7,6 @@ export default function Camera({ onDetect }) {
   const [modelo, setModelo] = useState(null)
   const [mensaje, setMensaje] = useState("Cargando modelo IA...")
 
-  // Activar cámara
   const activarCamara = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true })
@@ -15,20 +14,16 @@ export default function Camera({ onDetect }) {
       setMensaje("Cámara activada")
     } catch (error) {
       setMensaje("Error al activar la cámara")
-      console.error(error)
     }
   }
 
-  // Cargar modelo IA
   useEffect(() => {
     cocoSsd.load().then(model => {
       setModelo(model)
       setMensaje("Modelo listo, activa la cámara")
-      console.log("Modelo cargado")
     })
   }, [])
 
-  // Analizar objeto
   const analizar = async () => {
     if (!modelo || !videoRef.current) {
       setMensaje("Modelo o cámara no listos")
@@ -40,8 +35,7 @@ export default function Camera({ onDetect }) {
     if (predicciones.length > 0) {
       const objeto = predicciones[0].class
       setMensaje("Detectado: " + objeto)
-
-      onDetect(objeto) // enviar al App
+      onDetect(objeto)
     } else {
       setMensaje("No se detectó nada")
       onDetect(null)
@@ -49,12 +43,15 @@ export default function Camera({ onDetect }) {
   }
 
   return (
-    <div>
+    <div style={{ textAlign: "center", marginBottom: "20px" }}>
       <video
         ref={videoRef}
         autoPlay
         width="300"
-        style={{ borderRadius: "10px" }}
+        style={{
+          borderRadius: "15px",
+          boxShadow: "0 6px 15px rgba(0,0,0,0.5)"
+        }}
       />
 
       <br />
