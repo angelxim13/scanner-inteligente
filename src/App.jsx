@@ -23,6 +23,13 @@ function App() {
       <div style={{ padding: "20px" }}>
         <h1>Escáner Inteligente</h1>
 
+        {/* Mensaje dinámico */}
+        {objetoDetectado && (
+          <p style={{ textAlign: "center", fontSize: "18px" }}>
+            Objeto detectado: <strong>{objetoDetectado}</strong>
+          </p>
+        )}
+
         {/* Cámara */}
         <Camera onDetect={manejarDeteccion} />
 
@@ -45,6 +52,11 @@ function App() {
           </div>
 
         </div>
+
+        {/* Footer simple */}
+        <p style={{ textAlign: "center", marginTop: "20px", opacity: 0.7 }}>
+          Proyecto de reconocimiento con IA 🚀
+        </p>
       </div>
     </div>
   )
