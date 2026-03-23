@@ -55,11 +55,10 @@ function Laptop({ onSelect }) {
 
 export default function ModelViewer({ objeto, onSelect }) {
   return (
-    <Canvas>
+    <Canvas style={{ borderRadius: "20px" }}>
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
 
-      {/* Detectar varios objetos */}
       {objeto === "mouse" && <Mouse onSelect={onSelect} />}
       {objeto === "cell phone" && <Celular onSelect={onSelect} />}
       {objeto === "laptop" && <Laptop onSelect={onSelect} />}
