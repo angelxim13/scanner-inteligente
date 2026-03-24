@@ -1,62 +1,57 @@
-export default function InfoPanel({ objeto, parte }) {
+function InfoPanel({ objeto }) {
 
-  if (!objeto) {
-    return <p>No se ha detectado ningún objeto</p>
-  }
-
-  const estilosTitulo = {
-    color: "#00c9a7"
-  }
-
-  // Mouse
-  if (objeto === "mouse") {
-    const info = {
-      "Cuerpo": "Parte principal del mouse."
+  const info = {
+    "cell phone": {
+      nombre: "Teléfono",
+      descripcion: "Dispositivo móvil inteligente",
+      partes: ["Pantalla", "Cámara", "Batería"]
+    },
+    "person": {
+      nombre: "Persona",
+      descripcion: "Ser humano detectado",
+      partes: ["Cabeza", "Brazos", "Piernas"]
+    },
+    "laptop": {
+      nombre: "Laptop",
+      descripcion: "Computadora portátil",
+      partes: ["Pantalla", "Teclado", "Trackpad"]
+    },
+    "bottle": {
+      nombre: "Botella",
+      descripcion: "Recipiente para líquidos",
+      partes: ["Tapa", "Cuerpo"]
+    },
+    "chair": {
+      nombre: "Silla",
+      descripcion: "Objeto para sentarse",
+      partes: ["Respaldo", "Patas"]
+    },
+    "book": {
+      nombre: "Libro",
+      descripcion: "Objeto con información escrita",
+      partes: ["Portada", "Páginas"]
     }
-
-    if (!parte) return <p>Selecciona una parte del mouse</p>
-
-    return (
-      <>
-        <h2 style={estilosTitulo}>{parte}</h2>
-        <p>{info[parte]}</p>
-      </>
-    )
   }
 
-  // Celular
-  if (objeto === "cell phone") {
-    const info = {
-      "Pantalla": "Muestra la información.",
-      "Botón": "Permite interactuar."
-    }
+  const data = info[objeto]
 
-    if (!parte) return <p>Selecciona una parte del celular</p>
-
-    return (
-      <>
-        <h2 style={estilosTitulo}>{parte}</h2>
-        <p>{info[parte]}</p>
-      </>
-    )
+  if (!data) {
+    return <p>Objeto detectado: {objeto}</p>
   }
 
-  // Laptop
-  if (objeto === "laptop") {
-    const info = {
-      "Pantalla": "Muestra la imagen.",
-      "Teclado": "Permite escribir."
-    }
+  return (
+    <div>
+      <h2>{data.nombre}</h2>
+      <p>{data.descripcion}</p>
 
-    if (!parte) return <p>Selecciona una parte de la laptop</p>
-
-    return (
-      <>
-        <h2 style={estilosTitulo}>{parte}</h2>
-        <p>{info[parte]}</p>
-      </>
-    )
-  }
-
-  return <p>Objeto detectado: {objeto}</p>
+      <h3>Partes:</h3>
+      <ul>
+        {data.partes.map((p, i) => (
+          <li key={i}>{p}</li>
+        ))}
+      </ul>
+    </div>
+  )
 }
+
+export default InfoPanel
