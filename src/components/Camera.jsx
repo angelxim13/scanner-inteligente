@@ -7,17 +7,29 @@ function Camera({ onDetect }) {
   const videoRef = useRef(null)
   const canvasRef = useRef(null)
   const modelRef = useRef(null)
-  const detectedRef = useRef(false) // 🔥 evita múltiples detecciones
+  const detectedRef = useRef(false)
+  const streamRef = useRef(null)
 
+  // Activar cámara
   const startCamera = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ video: true })
     videoRef.current.srcObject = stream
+    streamRef.current = stream
   }
 
+  // 🔴 APAGAR CÁMARA
+  const stopCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop())
+    }
+  }
+
+  // Cargar modelo
   const loadModel = async () => {
     modelRef.current = await cocoSsd.load()
   }
 
+  // Dibujar cajas
   const drawBoxes = (predictions) => {
     const ctx = canvasRef.current.getContext("2d")
     ctx.clearRect(0, 0, 300, 220)
@@ -49,9 +61,11 @@ function Camera({ onDetect }) {
 
       drawBoxes(predictions)
 
-      // 🔥 SOLO DETECTA UNA VEZ
       if (!detectedRef.current && predictions.length > 0) {
         detectedRef.current = true
+
+        stopCamera() // 🔥 APAGA LA CÁMARA
+
         onDetect(predictions[0].class)
       }
     }
