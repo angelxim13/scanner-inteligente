@@ -29,7 +29,7 @@ function App() {
 
   return (
     <div className="app">
-      <Navbar />
+      <Navbar irInicio={reiniciar} />
 
       <div className="main">
 
