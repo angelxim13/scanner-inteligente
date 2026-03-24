@@ -1,13 +1,11 @@
-function Navbar() {
+function Navbar({ irInicio }) {
   return (
     <div className="navbar">
 
       <h2 className="logo">VisionScan 🔎</h2>
 
       <div className="nav-buttons">
-        <button>Inicio</button>
-        <button>Escanear</button>
-        <button>Información</button>
+        <button onClick={irInicio}>Inicio</button>
       </div>
 
     </div>
