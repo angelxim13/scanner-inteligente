@@ -1,65 +1,104 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import * as cocoSsd from "@tensorflow-models/coco-ssd"
 import "@tensorflow/tfjs"
 
-export default function Camera({ onDetect }) {
-  const videoRef = useRef(null)
-  const [modelo, setModelo] = useState(null)
-  const [mensaje, setMensaje] = useState("Cargando modelo IA...")
+function Camera({ onDetect }) {
 
-  const activarCamara = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true })
-      videoRef.current.srcObject = stream
-      setMensaje("Cámara activada")
-    } catch (error) {
-      setMensaje("Error al activar la cámara")
+  const videoRef = useRef(null)
+  const canvasRef = useRef(null)
+  const modelRef = useRef(null)
+
+  // Activar cámara
+  const startCamera = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+    videoRef.current.srcObject = stream
+  }
+
+  // Cargar modelo
+  const loadModel = async () => {
+    modelRef.current = await cocoSsd.load()
+    console.log("Modelo IA cargado")
+  }
+
+  // Dibujar cuadros
+  const drawBoxes = (predictions) => {
+    const ctx = canvasRef.current.getContext("2d")
+
+    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
+
+    predictions.forEach(pred => {
+      const [x, y, width, height] = pred.bbox
+
+      // Cuadro
+      ctx.strokeStyle = "#00e5ff"
+      ctx.lineWidth = 3
+      ctx.strokeRect(x, y, width, height)
+
+      // Texto
+      ctx.fillStyle = "#00e5ff"
+      ctx.font = "16px Arial"
+      ctx.fillText(
+        `${pred.class} (${Math.round(pred.score * 100)}%)`,
+        x,
+        y > 10 ? y - 5 : 10
+      )
+    })
+  }
+
+  // Detectar objetos
+  const detectObjects = async () => {
+    if (
+      modelRef.current &&
+      videoRef.current &&
+      videoRef.current.readyState === 4
+    ) {
+      const predictions = await modelRef.current.detect(videoRef.current)
+
+      // 🔥 Enviar el objeto principal al App
+      if (predictions.length > 0) {
+        onDetect(predictions[0].class)
+      }
+
+      drawBoxes(predictions)
     }
+
+    requestAnimationFrame(detectObjects)
   }
 
   useEffect(() => {
-    cocoSsd.load().then(model => {
-      setModelo(model)
-      setMensaje("Modelo listo, activa la cámara")
-    })
+    startCamera()
+    loadModel()
   }, [])
 
-  const analizar = async () => {
-    if (!modelo || !videoRef.current) {
-      setMensaje("Modelo o cámara no listos")
-      return
-    }
-
-    const predicciones = await modelo.detect(videoRef.current)
-
-    if (predicciones.length > 0) {
-      const objeto = predicciones[0].class
-      setMensaje("Detectado: " + objeto)
-      onDetect(objeto)
-    } else {
-      setMensaje("No se detectó nada")
-      onDetect(null)
-    }
-  }
+  useEffect(() => {
+    detectObjects()
+  }, [])
 
   return (
-    <div style={{ textAlign: "center", marginBottom: "20px" }}>
+    <div style={{ position: "relative", display: "inline-block" }}>
+      
       <video
         ref={videoRef}
         autoPlay
+        playsInline
         width="300"
+        height="220"
+        style={{ borderRadius: "15px" }}
+      />
+
+      <canvas
+        ref={canvasRef}
+        width="300"
+        height="220"
         style={{
-          borderRadius: "15px",
-          boxShadow: "0 6px 15px rgba(0,0,0,0.5)"
+          position: "absolute",
+          top: 0,
+          left: 0
         }}
       />
 
-      <br />
-
-      <button onClick={activarCamara}>Activar cámara</button>
-      <button onClick={analizar}>Analizar objeto</button>
-
-      <p>{mensaje}</p>
     </div>
   )
 }
+
+export default Camera
