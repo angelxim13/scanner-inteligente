@@ -1,23 +1,17 @@
-function Navbar(){
+function Navbar() {
+  return (
+    <div className="navbar">
 
-return(
+      <h2 className="logo">VisionScan 🔎</h2>
 
-<div className="navbar">
+      <div className="nav-buttons">
+        <button>Inicio</button>
+        <button>Escanear</button>
+        <button>Información</button>
+      </div>
 
-<h2>VisionScan 🔎</h2>
-
-<div>
-
-<button>Inicio</button>
-<button>Escanear</button>
-<button>Información</button>
-
-</div>
-
-</div>
-
-)
-
+    </div>
+  )
 }
 
 export default Navbar
