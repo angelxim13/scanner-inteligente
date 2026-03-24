@@ -10,35 +10,28 @@ function App() {
   const [objetoDetectado, setObjetoDetectado] = useState(null)
   const [parteSeleccionada, setParteSeleccionada] = useState(null)
 
-  // cuando detecta algo nuevo, reinicia la parte
   const manejarDeteccion = (objeto) => {
     setObjetoDetectado(objeto)
     setParteSeleccionada(null)
   }
 
   return (
-    <div>
+    <div className="app">
       <Navbar />
 
-      <div style={{ padding: "20px" }}>
+      <div className="main">
         <h1>Escáner Inteligente</h1>
 
         {/* IMAGEN */}
         <img 
           src="https://cdn-icons-png.flaticon.com/512/1042/1042339.png"
           alt="Escaner"
-          style={{ 
-            width: "180px", 
-            display: "block", 
-            margin: "15px auto",
-            borderRadius: "15px",
-            boxShadow: "0 6px 20px rgba(0,0,0,0.6)"
-          }}
+          className="scanner-img"
         />
 
         {/* Mensaje dinámico */}
         {objetoDetectado && (
-          <p style={{ textAlign: "center", fontSize: "18px" }}>
+          <p className="detected-text">
             Objeto detectado: <strong>{objetoDetectado}</strong>
           </p>
         )}
@@ -67,7 +60,7 @@ function App() {
         </div>
 
         {/* Footer */}
-        <p style={{ textAlign: "center", marginTop: "20px", opacity: 0.7 }}>
+        <p className="footer">
           Proyecto de reconocimiento con IA 🚀
         </p>
       </div>
