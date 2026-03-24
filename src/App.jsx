@@ -7,15 +7,20 @@ import "./App.css"
 
 function App() {
 
+  // Control de pantallas
   const [pantalla, setPantalla] = useState("inicio")
+
+  // Datos detectados
   const [objetoDetectado, setObjetoDetectado] = useState(null)
   const [parteSeleccionada, setParteSeleccionada] = useState(null)
 
+  // Cuando detecta algo
   const manejarDeteccion = (objeto) => {
     setObjetoDetectado(objeto)
-    setPantalla("resultado") // 🔥 cambia a resultado automáticamente
+    setPantalla("resultado") // cambia automáticamente
   }
 
+  // Reiniciar todo
   const reiniciar = () => {
     setObjetoDetectado(null)
     setParteSeleccionada(null)
@@ -45,7 +50,7 @@ function App() {
           </>
         )}
 
-        {/* ===== PANTALLA ESCANEO ===== */}
+        {/* ===== PANTALLA ESCANEAR ===== */}
         {pantalla === "escanear" && (
           <>
             <h1>Escaneando...</h1>
@@ -63,12 +68,14 @@ function App() {
           <>
             <h1>Resultado</h1>
 
+            {/* 🔥 AQUÍ YA SIEMPRE MUESTRA ALGO */}
             <p className="detected-text">
-              Objeto detectado: <strong>{objetoDetectado}</strong>
+              Objeto detectado: <strong>{objetoDetectado || "Detectando..."}</strong>
             </p>
 
             <div className="container">
 
+              {/* MODELO 3D */}
               <div className="viewer">
                 <ModelViewer 
                   objeto={objetoDetectado}
@@ -76,6 +83,7 @@ function App() {
                 />
               </div>
 
+              {/* INFORMACIÓN */}
               <div className="panel">
                 <InfoPanel 
                   objeto={objetoDetectado}
