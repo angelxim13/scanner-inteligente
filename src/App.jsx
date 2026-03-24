@@ -7,12 +7,19 @@ import "./App.css"
 
 function App() {
 
+  const [pantalla, setPantalla] = useState("inicio")
   const [objetoDetectado, setObjetoDetectado] = useState(null)
   const [parteSeleccionada, setParteSeleccionada] = useState(null)
 
   const manejarDeteccion = (objeto) => {
     setObjetoDetectado(objeto)
+    setPantalla("resultado") // 🔥 cambia a resultado automáticamente
+  }
+
+  const reiniciar = () => {
+    setObjetoDetectado(null)
     setParteSeleccionada(null)
+    setPantalla("inicio")
   }
 
   return (
@@ -20,49 +27,70 @@ function App() {
       <Navbar />
 
       <div className="main">
-        <h1>Escáner Inteligente</h1>
 
-        {/* IMAGEN */}
-        <img 
-          src="https://cdn-icons-png.flaticon.com/512/1042/1042339.png"
-          alt="Escaner"
-          className="scanner-img"
-        />
+        {/* ===== PANTALLA INICIO ===== */}
+        {pantalla === "inicio" && (
+          <>
+            <h1>Escáner Inteligente</h1>
 
-        {/* Mensaje dinámico */}
-        {objetoDetectado && (
-          <p className="detected-text">
-            Objeto detectado: <strong>{objetoDetectado}</strong>
-          </p>
+            <img 
+              src="https://cdn-icons-png.flaticon.com/512/1042/1042339.png"
+              alt="Escaner"
+              className="scanner-img"
+            />
+
+            <button onClick={() => setPantalla("escanear")}>
+              Escanear objeto 📷
+            </button>
+          </>
         )}
 
-        {/* Cámara */}
-        <Camera onDetect={manejarDeteccion} />
+        {/* ===== PANTALLA ESCANEO ===== */}
+        {pantalla === "escanear" && (
+          <>
+            <h1>Escaneando...</h1>
 
-        <div className="container">
+            <Camera onDetect={manejarDeteccion} />
 
-          {/* Modelo 3D */}
-          <div className="viewer">
-            <ModelViewer 
-              objeto={objetoDetectado}
-              onSelect={setParteSeleccionada}
-            />
-          </div>
+            <button onClick={reiniciar}>
+              Regresar ⬅️
+            </button>
+          </>
+        )}
 
-          {/* Información */}
-          <div className="panel">
-            <InfoPanel 
-              objeto={objetoDetectado}
-              parte={parteSeleccionada}
-            />
-          </div>
+        {/* ===== PANTALLA RESULTADO ===== */}
+        {pantalla === "resultado" && (
+          <>
+            <h1>Resultado</h1>
 
-        </div>
+            <p className="detected-text">
+              Objeto detectado: <strong>{objetoDetectado}</strong>
+            </p>
 
-        {/* Footer */}
-        <p className="footer">
-          Proyecto de reconocimiento con IA 🚀
-        </p>
+            <div className="container">
+
+              <div className="viewer">
+                <ModelViewer 
+                  objeto={objetoDetectado}
+                  onSelect={setParteSeleccionada}
+                />
+              </div>
+
+              <div className="panel">
+                <InfoPanel 
+                  objeto={objetoDetectado}
+                  parte={parteSeleccionada}
+                />
+              </div>
+
+            </div>
+
+            <button onClick={reiniciar}>
+              Escanear otro 🔄
+            </button>
+          </>
+        )}
+
       </div>
     </div>
   )
