@@ -1,69 +1,41 @@
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls } from "@react-three/drei"
 
-// 🖱️ Mouse
-function Mouse({ onSelect }) {
+function Box() {
   return (
-    <>
-      <mesh onClick={() => onSelect("Cuerpo")}>
-        <sphereGeometry args={[1, 32, 32]} />
-        <meshStandardMaterial color="gray" />
-      </mesh>
-    </>
+    <mesh>
+      <boxGeometry />
+      <meshStandardMaterial color="cyan" />
+    </mesh>
   )
 }
 
-// 📱 Celular
-function Celular({ onSelect }) {
+function Sphere() {
   return (
-    <>
-      <mesh onClick={() => onSelect("Pantalla")}>
-        <boxGeometry args={[1, 2, 0.1]} />
-        <meshStandardMaterial color="black" />
-      </mesh>
-
-      <mesh 
-        position={[0, -0.9, 0.1]} 
-        onClick={() => onSelect("Botón")}
-      >
-        <boxGeometry args={[0.3, 0.2, 0.1]} />
-        <meshStandardMaterial color="gray" />
-      </mesh>
-    </>
+    <mesh>
+      <sphereGeometry />
+      <meshStandardMaterial color="orange" />
+    </mesh>
   )
 }
 
-// 💻 Laptop
-function Laptop({ onSelect }) {
-  return (
-    <>
-      <mesh onClick={() => onSelect("Pantalla")}>
-        <boxGeometry args={[2, 1, 0.1]} />
-        <meshStandardMaterial color="blue" />
-      </mesh>
+function ModelViewer({ objeto }) {
 
-      <mesh 
-        position={[0, -1, 0]} 
-        onClick={() => onSelect("Teclado")}
-      >
-        <boxGeometry args={[2, 0.2, 1]} />
-        <meshStandardMaterial color="gray" />
-      </mesh>
-    </>
-  )
-}
+  const renderModel = () => {
+    if (objeto === "cell phone") return <Box />
+    if (objeto === "ball") return <Sphere />
+    if (objeto === "bottle") return <Sphere />
+    return <Box />
+  }
 
-export default function ModelViewer({ objeto, onSelect }) {
   return (
-    <Canvas style={{ borderRadius: "20px" }}>
+    <Canvas style={{ height: "100%" }}>
       <ambientLight />
-      <pointLight position={[10, 10, 10]} />
-
-      {objeto === "mouse" && <Mouse onSelect={onSelect} />}
-      {objeto === "cell phone" && <Celular onSelect={onSelect} />}
-      {objeto === "laptop" && <Laptop onSelect={onSelect} />}
-
+      <directionalLight position={[2, 2, 2]} />
+      {renderModel()}
       <OrbitControls />
     </Canvas>
   )
 }
+
+export default ModelViewer
