@@ -1,9 +1,19 @@
-import { Canvas } from "@react-three/fiber"
+import { Canvas, useFrame } from "@react-three/fiber"
 import { OrbitControls, useGLTF } from "@react-three/drei"
+import { useRef } from "react"
 
 function Modelo({ url }) {
   const { scene } = useGLTF(url)
-  return <primitive object={scene} scale={1.5} />
+  const ref = useRef()
+
+  // 🔄 ROTACIÓN AUTOMÁTICA
+  useFrame(() => {
+    if (ref.current) {
+      ref.current.rotation.y += 0.01
+    }
+  })
+
+  return <primitive ref={ref} object={scene} scale={1.5} />
 }
 
 function ModelViewer({ objeto }) {
@@ -17,13 +27,11 @@ function ModelViewer({ objeto }) {
 
   const modelUrl = getModel()
 
-  if (!modelUrl) {
-    return <p>No hay modelo disponible</p>
-  }
+  if (!modelUrl) return <p>No hay modelo</p>
 
   return (
     <Canvas>
-      <ambientLight />
+      <ambientLight intensity={1} />
       <directionalLight position={[2, 2, 2]} />
       <Modelo url={modelUrl} />
       <OrbitControls />
