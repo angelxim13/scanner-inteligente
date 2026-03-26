@@ -1,38 +1,31 @@
 import { Canvas } from "@react-three/fiber"
-import { OrbitControls } from "@react-three/drei"
+import { OrbitControls, useGLTF } from "@react-three/drei"
 
-function Box() {
-  return (
-    <mesh>
-      <boxGeometry />
-      <meshStandardMaterial color="cyan" />
-    </mesh>
-  )
-}
-
-function Sphere() {
-  return (
-    <mesh>
-      <sphereGeometry />
-      <meshStandardMaterial color="orange" />
-    </mesh>
-  )
+function Modelo({ url }) {
+  const { scene } = useGLTF(url)
+  return <primitive object={scene} scale={1.5} />
 }
 
 function ModelViewer({ objeto }) {
 
-  const renderModel = () => {
-    if (objeto === "cell phone") return <Box />
-    if (objeto === "ball") return <Sphere />
-    if (objeto === "bottle") return <Sphere />
-    return <Box />
+  const getModel = () => {
+    if (objeto === "cell phone") return "/models/phone.glb"
+    if (objeto === "laptop") return "/models/laptop.glb"
+    if (objeto === "person") return "/models/person.glb"
+    return null
+  }
+
+  const modelUrl = getModel()
+
+  if (!modelUrl) {
+    return <p>No hay modelo disponible</p>
   }
 
   return (
-    <Canvas style={{ height: "100%" }}>
+    <Canvas>
       <ambientLight />
       <directionalLight position={[2, 2, 2]} />
-      {renderModel()}
+      <Modelo url={modelUrl} />
       <OrbitControls />
     </Canvas>
   )
