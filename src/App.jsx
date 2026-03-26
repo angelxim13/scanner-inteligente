@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { motion } from "framer-motion"
 import Navbar from "./components/Navbar"
 import Camera from "./components/Camera"
 import ModelViewer from "./components/ModelViewer"
@@ -7,20 +8,24 @@ import "./App.css"
 
 function App() {
 
-  // Control de pantallas
   const [pantalla, setPantalla] = useState("inicio")
-
-  // Datos detectados
   const [objetoDetectado, setObjetoDetectado] = useState(null)
   const [parteSeleccionada, setParteSeleccionada] = useState(null)
 
-  // Cuando detecta algo
-  const manejarDeteccion = (objeto) => {
-    setObjetoDetectado(objeto)
-    setPantalla("resultado") // cambia automáticamente
+  // 🔊 VOZ IA
+  const hablar = (texto) => {
+    const speech = new SpeechSynthesisUtterance(texto)
+    speech.lang = "es-ES"
+    speech.rate = 1
+    speechSynthesis.speak(speech)
   }
 
-  // Reiniciar todo
+  const manejarDeteccion = (objeto) => {
+    setObjetoDetectado(objeto)
+    hablar(`Objeto detectado: ${objeto}`)
+    setPantalla("resultado")
+  }
+
   const reiniciar = () => {
     setObjetoDetectado(null)
     setParteSeleccionada(null)
@@ -33,26 +38,28 @@ function App() {
 
       <div className="main">
 
-        {/* ===== PANTALLA INICIO ===== */}
+        {/* INICIO */}
         {pantalla === "inicio" && (
-          <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
             <h1>Escáner Inteligente</h1>
 
             <img 
               src="https://cdn-icons-png.flaticon.com/512/1042/1042339.png"
-              alt="Escaner"
               className="scanner-img"
             />
 
             <button onClick={() => setPantalla("escanear")}>
               Escanear objeto 📷
             </button>
-          </>
+          </motion.div>
         )}
 
-        {/* ===== PANTALLA ESCANEAR ===== */}
+        {/* ESCANEO */}
         {pantalla === "escanear" && (
-          <>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <h1>Escaneando...</h1>
 
             <Camera onDetect={manejarDeteccion} />
@@ -60,35 +67,29 @@ function App() {
             <button onClick={reiniciar}>
               Regresar ⬅️
             </button>
-          </>
+          </motion.div>
         )}
 
-        {/* ===== PANTALLA RESULTADO ===== */}
+        {/* RESULTADO */}
         {pantalla === "resultado" && (
-          <>
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
             <h1>Resultado</h1>
 
-            {/* 🔥 AQUÍ YA SIEMPRE MUESTRA ALGO */}
             <p className="detected-text">
-              Objeto detectado: <strong>{objetoDetectado || "Detectando..."}</strong>
+              Objeto detectado: <strong>{objetoDetectado}</strong>
             </p>
 
             <div className="container">
 
-              {/* MODELO 3D */}
               <div className="viewer">
-                <ModelViewer 
-                  objeto={objetoDetectado}
-                  onSelect={setParteSeleccionada}
-                />
+                <ModelViewer objeto={objetoDetectado} />
               </div>
 
-              {/* INFORMACIÓN */}
               <div className="panel">
-                <InfoPanel 
-                  objeto={objetoDetectado}
-                  parte={parteSeleccionada}
-                />
+                <InfoPanel objeto={objetoDetectado} />
               </div>
 
             </div>
@@ -96,7 +97,7 @@ function App() {
             <button onClick={reiniciar}>
               Escanear otro 🔄
             </button>
-          </>
+          </motion.div>
         )}
 
       </div>
