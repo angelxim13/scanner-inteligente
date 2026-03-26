@@ -2,51 +2,31 @@ function InfoPanel({ objeto }) {
 
   const info = {
     "cell phone": {
-      nombre: "Teléfono",
-      descripcion: "Dispositivo móvil inteligente",
+      descripcion: "Dispositivo portátil usado para comunicación, internet y aplicaciones.",
       partes: ["Pantalla", "Cámara", "Batería"]
     },
-    "person": {
-      nombre: "Persona",
-      descripcion: "Ser humano detectado",
-      partes: ["Cabeza", "Brazos", "Piernas"]
-    },
     "laptop": {
-      nombre: "Laptop",
-      descripcion: "Computadora portátil",
-      partes: ["Pantalla", "Teclado", "Trackpad"]
+      descripcion: "Computadora portátil para trabajo, estudio y entretenimiento.",
+      partes: ["Teclado", "Pantalla", "Procesador"]
     },
-    "bottle": {
-      nombre: "Botella",
-      descripcion: "Recipiente para líquidos",
-      partes: ["Tapa", "Cuerpo"]
-    },
-    "chair": {
-      nombre: "Silla",
-      descripcion: "Objeto para sentarse",
-      partes: ["Respaldo", "Patas"]
-    },
-    "book": {
-      nombre: "Libro",
-      descripcion: "Objeto con información escrita",
-      partes: ["Portada", "Páginas"]
+    "person": {
+      descripcion: "Ser humano detectado por el sistema.",
+      partes: ["Cabeza", "Torso", "Extremidades"]
     }
   }
 
-  const data = info[objeto]
-
-  if (!data) {
-    return <p>Objeto detectado: {objeto}</p>
+  if (!objeto || !info[objeto]) {
+    return <p>No hay información disponible</p>
   }
 
   return (
     <div>
-      <h2>{data.nombre}</h2>
-      <p>{data.descripcion}</p>
+      <h2>Información</h2>
+      <p>{info[objeto].descripcion}</p>
 
       <h3>Partes:</h3>
       <ul>
-        {data.partes.map((p, i) => (
+        {info[objeto].partes.map((p, i) => (
           <li key={i}>{p}</li>
         ))}
       </ul>
