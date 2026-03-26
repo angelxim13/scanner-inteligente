@@ -12,8 +12,12 @@ function App() {
   const [objetoDetectado, setObjetoDetectado] = useState(null)
   const [parteSeleccionada, setParteSeleccionada] = useState(null)
 
-  // 🔊 VOZ IA
+  // 🔊 CONTROL DE VOZ
+  const [vozActiva, setVozActiva] = useState(true)
+
   const hablar = (texto) => {
+    if (!vozActiva) return
+
     const speech = new SpeechSynthesisUtterance(texto)
     speech.lang = "es-ES"
     speech.rate = 1
@@ -38,7 +42,7 @@ function App() {
 
       <div className="main">
 
-        {/* INICIO */}
+        {/* ===== INICIO ===== */}
         {pantalla === "inicio" && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -48,6 +52,7 @@ function App() {
 
             <img 
               src="https://cdn-icons-png.flaticon.com/512/1042/1042339.png"
+              alt="scanner"
               className="scanner-img"
             />
 
@@ -57,9 +62,12 @@ function App() {
           </motion.div>
         )}
 
-        {/* ESCANEO */}
+        {/* ===== ESCANEAR ===== */}
         {pantalla === "escanear" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
             <h1>Escaneando...</h1>
 
             <Camera onDetect={manejarDeteccion} />
@@ -70,7 +78,7 @@ function App() {
           </motion.div>
         )}
 
-        {/* RESULTADO */}
+        {/* ===== RESULTADO ===== */}
         {pantalla === "resultado" && (
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -84,13 +92,28 @@ function App() {
 
             <div className="container">
 
+              {/* MODELO 3D */}
               <div className="viewer">
                 <ModelViewer objeto={objetoDetectado} />
               </div>
 
+              {/* INFO */}
               <div className="panel">
                 <InfoPanel objeto={objetoDetectado} />
               </div>
+
+            </div>
+
+            {/* 🔥 BOTONES NUEVOS */}
+            <div className="extra-buttons">
+
+              <button onClick={() => setPantalla("escanear")}>
+                Reintentar 🔄
+              </button>
+
+              <button onClick={() => setVozActiva(!vozActiva)}>
+                {vozActiva ? "Desactivar voz 🔇" : "Activar voz 🔊"}
+              </button>
 
             </div>
 
